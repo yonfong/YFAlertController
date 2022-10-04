@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'YFAlertController'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of YFAlertController.'
+  s.summary          = 'An iOS Customizable alert sheet Controller.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+  YFAlertController is a framework that rewrite the [SPAlertController](https://github.com/SPStore/SPAlertController) in Swift.
                        DESC
 
   s.homepage         = 'https://github.com/yonfong/YFAlertController'
