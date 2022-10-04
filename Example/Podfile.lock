@@ -1,0 +1,16 @@
+PODS:
+  - YFAlertController (0.1.0)
+
+DEPENDENCIES:
+  - YFAlertController (from `../`)
+
+EXTERNAL SOURCES:
+  YFAlertController:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  YFAlertController: 2ca41f6ff0af12e4f2a38e81d1cb6675e1d07b20
+
+PODFILE CHECKSUM: 0b948dee176b4cfdc7ae458e4c8ff2070d72afd5
+
+COCOAPODS: 1.11.3
