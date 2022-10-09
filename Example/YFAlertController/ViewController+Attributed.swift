@@ -19,16 +19,16 @@ extension ViewController {
         let mainTitle1 = "拍摄"
         let subTitle1 = "照片或视频"
         let totalTitle1 = mainTitle1+"\n"+subTitle1
-        let attrTitle1 = NSMutableAttributedString.init(string: totalTitle1)
-        let paragraphStyle1 = NSMutableParagraphStyle.init()
+        let attrTitle1 = NSMutableAttributedString(string: totalTitle1)
+        let paragraphStyle1 = NSMutableParagraphStyle()
         paragraphStyle1.lineSpacing = 3
         paragraphStyle1.lineBreakMode = .byWordWrapping
         paragraphStyle1.alignment = .center
         // 段落样式
-        attrTitle1.addAttribute(.paragraphStyle, value: paragraphStyle1, range: .init(location: 0, length: totalTitle1.count))
+        attrTitle1.addAttribute(.paragraphStyle, value: paragraphStyle1, range: NSRange(location: 0, length: totalTitle1.count))
         // 设置富文本子标题的字体
-        attrTitle1.addAttribute(.font, value: UIFont.systemFont(ofSize: 12), range: NSRange.init(location: mainTitle1.count, length: subTitle1.count+1))
-        attrTitle1.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange.init(location: mainTitle1.count, length: subTitle1.count+1))
+        attrTitle1.addAttribute(.font, value: UIFont.systemFont(ofSize: 12), range: NSRange(location: mainTitle1.count, length: subTitle1.count+1))
+        attrTitle1.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: mainTitle1.count, length: subTitle1.count+1))
         
         action1.attributedTitle = attrTitle1
         
@@ -43,16 +43,16 @@ extension ViewController {
         let mainTitle3 = "用微视拍摄"
         let subTitle3 = "推广"
         let totalTitle3 = mainTitle3+"\n"+subTitle3
-        let attrTitle3 = NSMutableAttributedString.init(string: totalTitle3)
-        let paragraphStyle3 = NSMutableParagraphStyle.init()
+        let attrTitle3 = NSMutableAttributedString(string: totalTitle3)
+        let paragraphStyle3 = NSMutableParagraphStyle()
         paragraphStyle3.lineSpacing = 3
         paragraphStyle3.lineBreakMode = .byWordWrapping
         paragraphStyle3.alignment = .center
         // 段落样式
-        attrTitle1.addAttribute(.paragraphStyle, value: paragraphStyle3, range: .init(location: 0, length: totalTitle3.count))
+        attrTitle1.addAttribute(.paragraphStyle, value: paragraphStyle3, range: NSRange(location: 0, length: totalTitle3.count))
         // 设置富文本子标题的字体
-        attrTitle3.addAttribute(.font, value: UIFont.systemFont(ofSize: 12), range: NSRange.init(location: mainTitle3.count, length: subTitle3.count+1))
-        attrTitle3.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange.init(location: mainTitle3.count, length: subTitle3.count+1))
+        attrTitle3.addAttribute(.font, value: UIFont.systemFont(ofSize: 12), range: NSRange(location: mainTitle3.count, length: subTitle3.count+1))
+        attrTitle3.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: mainTitle3.count, length: subTitle3.count+1))
         
         action3.attributedTitle = attrTitle3
         
@@ -76,10 +76,10 @@ extension ViewController {
            let num = "15012345689"
            let desc = "可能是一个电话号码"
            let totalTitle = num+"\n"+desc
-           let attrTitle = NSMutableAttributedString.init(string: totalTitle)
+           let attrTitle = NSMutableAttributedString(string: totalTitle)
         
            // 设置富文本子标题的字体
-           attrTitle.addAttribute(.foregroundColor, value: SYSTEM_COLOR, range: NSRange.init(location: 0, length: num.count))
+           attrTitle.addAttribute(.foregroundColor, value: SYSTEM_COLOR, range: NSRange(location: 0, length: num.count))
            alertController.attributedTitle = attrTitle
            
            if customBlur {

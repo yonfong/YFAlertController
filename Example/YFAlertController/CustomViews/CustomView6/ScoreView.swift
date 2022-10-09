@@ -60,7 +60,7 @@ class ScoreView: UIView {
         starRatingV.minimumValue = 0
         starRatingV.value = 2
         starRatingV.spacing = 20
-        starRatingV.tintColor = UIColor.init(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)
+        starRatingV.tintColor = UIColor(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)
         starRatingV.allowsHalfStars = true
         return starRatingV
     }()
@@ -74,10 +74,10 @@ class ScoreView: UIView {
     }()
 
     lazy var finishButton: UIButton = {
-        let btn = UIButton.init(type: .custom)
+        let btn = UIButton(type: .custom)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.backgroundColor = UIColor.white
-        let titleColor = UIColor.init(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)
+        let titleColor = UIColor(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)
         btn.setTitleColor(titleColor, for: .normal)
         btn.setTitle("完成", for: .normal)
         btn.addTarget(self, action: #selector(finishButtonAction), for: .touchUpInside)

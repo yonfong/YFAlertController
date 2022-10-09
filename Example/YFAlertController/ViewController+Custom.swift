@@ -34,7 +34,7 @@ extension ViewController {
         let myView = MyView.loadFromNib()
         myView.cancelButton.addTarget(self, action: #selector(cancelButtonInCustomHeaderViewClicked), for: .touchUpInside)
         let alertController = YFAlertController.alertController(customAlertView: myView, preferredStyle: .alert, animationType: .default)
-        alertController.offsetForAlert = CGPoint.init(x: 0, y: -100)
+        alertController.offsetForAlert = CGPoint(x: 0, y: -100)
         if customBlur {
             alertController.customOverlayView = CustomOverlayView()
         }
@@ -50,7 +50,7 @@ extension ViewController {
         let shoppingCartView = ShoppingCartView()
         let alertController = YFAlertController.alertController(customAlertView: shoppingCartView, preferredStyle: .actionSheet, animationType: .fromBottom)
         alertController.needDialogBlur = false
-        alertController.updateCustomViewSize(size: CGSize.init(width: ScreenWidth, height: ScreenHeight*2/3))
+        alertController.updateCustomViewSize(size: CGSize(width: ScreenWidth, height: ScreenHeight*2/3))
         if customBlur {
             alertController.customOverlayView = CustomOverlayView()
         }
@@ -59,7 +59,7 @@ extension ViewController {
     
     // 示例21:自定义整个对话框(actionSheet样式从右边弹出)
     func customTest4() {
-        let shoppingCartView = ShoppingCartView.init(frame: CGRect.init(x: 0, y: 0, width: ScreenWidth-70, height: ScreenHeight))
+        let shoppingCartView = ShoppingCartView(frame: CGRect(x: 0, y: 0, width: ScreenWidth-70, height: ScreenHeight))
         shoppingCartView.backgroundColor = .white
         let alertController = YFAlertController.alertController(customAlertView: shoppingCartView, preferredStyle: .actionSheet, animationType: .fromRight)
         if customBlur {
@@ -69,7 +69,7 @@ extension ViewController {
     }
     // 示例22:自定义整个对话框(actionSheet样式从左边弹出)
     func customTest5() {
-        let shoppingCartView = ShoppingCartView.init(frame: CGRect.init(x: 0, y: 0, width: ScreenWidth-70, height: ScreenHeight))
+        let shoppingCartView = ShoppingCartView(frame: CGRect(x: 0, y: 0, width: ScreenWidth-70, height: ScreenHeight))
         shoppingCartView.backgroundColor = .white
         let alertController = YFAlertController.alertController(customAlertView: shoppingCartView, preferredStyle: .actionSheet, animationType: .fromLeft)
         if customBlur {
@@ -80,7 +80,7 @@ extension ViewController {
     
     // 示例23:自定义整个对话框(actionSheet样式从顶部弹出)
     func customTest6() {
-        let shoppingCartView = CommodityListView.init(frame: CGRect.init(x: 0, y: 0, width: ScreenWidth, height: 200))
+        let shoppingCartView = CommodityListView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 200))
         shoppingCartView.backgroundColor = .white
         let alertController = YFAlertController.alertController(customAlertView: shoppingCartView, preferredStyle: .actionSheet, animationType: .fromTop)
         if customBlur {
@@ -108,7 +108,7 @@ extension ViewController {
     // 示例25:自定义action部分
     func customTest8() {
         // scoreview的子控件采用的是自动布局，由于高度上能够由子控件撑起来，所以高度可以给0，如果宽度也能撑起，宽度也可以给0
-        let scoreView = ScoreView.init(frame: CGRect.init(x: 0, y: 0, width: 275, height: 0))
+        let scoreView = ScoreView(frame: CGRect(x: 0, y: 0, width: 275, height: 0))
         scoreView.backgroundColor = .white
         scoreView.finishClickedClosure = { [weak self] in
             self?.presentedViewController?.dismiss(animated: true, completion: nil)
@@ -123,7 +123,7 @@ extension ViewController {
     }
     // 示例25:插入一个组件
     func customTest9() {
-        let centerView = MyCenterView.init(frame: CGRect.init(x: 0, y: 0, width: ScreenWidth-40, height: 200))
+        let centerView = MyCenterView(frame: CGRect(x: 0, y: 0, width: ScreenWidth-40, height: 200))
         let alertController = YFAlertController.alertController(title: "我是主标题", message: "我是副标题", preferredStyle: .alert, animationType: .default)
         // 插入一个view
         alertController.insertComponentView(centerView)

@@ -240,12 +240,12 @@ public extension YFAlertController {
         
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
+        textField.backgroundColor = YFAlertColorConfig.textViewBackgroundColor
         // 系统的UITextBorderStyleLine样式线条过于黑，所以自己设置
         textField.layer.borderWidth = YFAlertConfig.minLineHeight
-        textField.layer.borderColor = UIColor.gray.cgColor
+        textField.layer.borderColor = YFAlertColorConfig.textFieldBorderColor.cgColor
         // 在左边设置一张view，充当光标左边的间距，否则光标紧贴textField不美观
-        textField.leftView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 5, height: 0))
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         textField.leftView?.isUserInteractionEnabled = false
         textField.leftViewMode = .always
         // 去掉textField键盘上部的联想条
@@ -286,7 +286,7 @@ internal extension UIView {
         
         let translation = CAKeyframeAnimation(keyPath: "transform.translation.x")
        // translation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        translation.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        translation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
         translation.values = vals
         
         let rotation = CAKeyframeAnimation(keyPath: "transform.rotation.z")

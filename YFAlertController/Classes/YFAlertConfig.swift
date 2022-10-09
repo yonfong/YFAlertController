@@ -31,7 +31,7 @@ public enum YFAlertActionStyle {
     case destructive
 }
 
-public struct YFAlertConfig {
+struct YFAlertConfig {
     static var keyWindow: UIWindow? {
         if #available(iOS 13, *) {
             return UIApplication.shared.windows.first { $0.isKeyWindow }
@@ -79,7 +79,7 @@ public struct YFAlertConfig {
     static let actionItemHeight: CGFloat = 55
 }
 
-public struct YFAlertColorConfig {
+struct YFAlertColorConfig {
     static var normalColor: UIColor {
         return .dynamicColor(defaultColor: UIColor.white.withAlphaComponent(0.7), darkColor: UIColor(red: 44.0 / 255.0, green: 44.0 / 255.0, blue: 44.0 / 255.0, alpha: 1))
     }
@@ -129,8 +129,7 @@ public struct YFAlertColorConfig {
     }
 }
 
-
-public extension UIColor {
+extension UIColor {
     static func dynamicColor(defaultColor: UIColor, darkColor: UIColor?) -> UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { traitCollection in
@@ -157,6 +156,7 @@ public extension UIColor {
         }
     }
 }
+
 
 
 

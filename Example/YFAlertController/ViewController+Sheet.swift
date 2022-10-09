@@ -156,13 +156,13 @@ extension ViewController {
         let action1 = YFAlertAction.action(withTitle: "视频通话", style: .default) { (action) in
             print("点击了‘视频通话’")
         }
-        action1.image = UIImage.init(named: "video")
+        action1.image = UIImage(named: "video")
         action1.imageTitleSpacing = 5
         
         let action2 = YFAlertAction.action(withTitle: "语音通话", style: .default) { (action) in
             print("点击了‘语音通话’")
         }
-        action2.image = UIImage.init(named: "telephone")
+        action2.image = UIImage(named: "telephone")
         action2.imageTitleSpacing = 5
         
         let action3 = YFAlertAction.action(withTitle: "取消", style: .cancel) { (action) in

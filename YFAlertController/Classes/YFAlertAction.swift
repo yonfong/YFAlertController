@@ -44,7 +44,7 @@ open class YFAlertAction: NSObject {
         }
     }
     /// action的标题颜色,这个颜色只是普通文本的颜色，富文本颜色需要用NSForegroundColorAttributeName
-    public var titleColor: UIColor = .black {
+    public var titleColor: UIColor = YFAlertColorConfig.dynamicBlackColor {
         didSet{// 颜色改变不需要更新布局
             self.propertyChangedClosure?(self,false)
         }
@@ -56,7 +56,7 @@ open class YFAlertAction: NSObject {
            }
        }
     /// action的标题的内边距，如果在不改变字体的情况下想增大action的高度，可以设置该属性的top和bottom值,默认UIEdgeInsetsMake(0, 15, 0, 15)
-    public var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
+    public var titleEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     
     public var handler: ((YFAlertAction) ->Void)?
     //当在addAction之后设置action属性时,会回调这个block,设置相应控件的字体、颜色等
@@ -66,12 +66,11 @@ open class YFAlertAction: NSObject {
     public class func action(withTitle title: String?,
                         style: YFAlertActionStyle,
                         handler: @escaping (YFAlertAction)->Void) -> YFAlertAction {
-        let action = YFAlertAction.init(title: title, style: style, handler: handler)
+        let action = YFAlertAction(title: title, style: style, handler: handler)
         return action
     }
     
     convenience init(title: String?, style: YFAlertActionStyle, handler: @escaping ((YFAlertAction) ->Void)) {
-        
         self.init()
         self.title = title
         self.style = style

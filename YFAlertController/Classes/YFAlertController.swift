@@ -109,7 +109,7 @@ open class YFAlertController: UIViewController {
     }
     
     /** 头部图标的限制大小,默认无穷大 */
-    public var imageLimitSize: CGSize = CGSize.init(width: CGFloat(MAXFLOAT), height: CGFloat(MAXFLOAT)) {
+    public var imageLimitSize: CGSize = CGSize(width: CGFloat(MAXFLOAT), height: CGFloat(MAXFLOAT)) {
         willSet (newValue) {
             headerView?.imageLimitSize = newValue
             if presentationController?.presentingViewController != nil {
@@ -245,13 +245,12 @@ open class YFAlertController: UIViewController {
             view.layer.masksToBounds = true
         } else {
             if cornerRadius > 0.0 {
-                let maskLayer = CAShapeLayer.init()
+                let maskLayer = CAShapeLayer()
                 view.layer.mask = maskLayer
             }
         }
         alertControllerView.addSubview(view)
-        
-        
+    
         return view
     }()
     
@@ -561,35 +560,35 @@ open class YFAlertController: UIViewController {
         let maxHeight = YFAlertConfig.screenHeight-topValue-bottomValue
         if self.customAlertView == nil {
             // 当屏幕旋转的时候，为了保持alert样式下的宽高不变，因此取MIN(YFAlertConfig.screenWidth, YFAlertConfig.screenHeight)
-            alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: maxWidth))
+            alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: maxWidth))
             
         } else {
-            alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: .width, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: maxWidth))
+            alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .width, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: maxWidth))
             // 如果宽度没有值，则会假定customAlertView水平方向能由子控件撑起
             if customViewSize.width > 0 {
                 // 限制最大宽度，且能保证内部约束不报警告
                 let customWidth = min(customViewSize.width, maxWidth)
-                alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customWidth))
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customWidth))
             }
              // 如果高度没有值，则会假定customAlertView垂直方向能由子控件撑起
             if customViewSize.height > 0 {
                 let customHeight = min(customViewSize.height, maxHeight)
-                alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customHeight))
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customHeight))
             }
         }
-        let topConstraint = NSLayoutConstraint.init(item: alertControllerView, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: alertControllerView.superview, attribute: .top, multiplier: 1.0, constant: topValue)
-        topConstraint.priority = UILayoutPriority.init(999.0)
+        let topConstraint = NSLayoutConstraint(item: alertControllerView, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: alertControllerView.superview, attribute: .top, multiplier: 1.0, constant: topValue)
+        topConstraint.priority = UILayoutPriority(999.0)
         alertControllerViewConstraints.append(topConstraint)
         //这里优先级为999.0是为了小于垂直中心的优先级，如果含有文本输入框，键盘弹出后，特别是旋转到横屏后，对话框的空间比较小，这个时候优先偏移垂直中心，顶部优先级按理说应该会被忽略，但是由于子控件含有scrollView，所以该优先级仍然会被激活，子控件显示不全scrollView可以滑动。如果外界自定义了整个对话框，且自定义的view上含有文本输入框，子控件不含有scrollView，顶部间距会被忽略
-        let bottomConstraint = NSLayoutConstraint.init(item: alertControllerView, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: alertControllerView.superview, attribute: .bottom, multiplier: 1.0, constant: -bottomValue)
-        bottomConstraint.priority = UILayoutPriority.init(999.0)// 优先级跟顶部同理
+        let bottomConstraint = NSLayoutConstraint(item: alertControllerView, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: alertControllerView.superview, attribute: .bottom, multiplier: 1.0, constant: -bottomValue)
+        bottomConstraint.priority = UILayoutPriority(999.0)// 优先级跟顶部同理
         alertControllerViewConstraints.append(bottomConstraint)
         
-        let centerXConstraints = NSLayoutConstraint.init(item: alertControllerView, attribute: .centerX, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .centerX, multiplier: 1.0, constant: offsetForAlert.x)
+        let centerXConstraints = NSLayoutConstraint(item: alertControllerView, attribute: .centerX, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .centerX, multiplier: 1.0, constant: offsetForAlert.x)
         alertControllerViewConstraints.append(centerXConstraints)
         
         let constantY = (self.isBeingPresented && !self.isBeingDismissed)  ? 0 : offsetForAlert.y
-        let centerYConstraints = NSLayoutConstraint.init(item: alertControllerView, attribute: .centerY, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .centerY, multiplier: 1.0, constant: constantY)
+        let centerYConstraints = NSLayoutConstraint(item: alertControllerView, attribute: .centerY, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .centerY, multiplier: 1.0, constant: constantY)
         alertControllerViewConstraints.append(centerYConstraints)
         
         NSLayoutConstraint.activate(alertControllerViewConstraints)
@@ -642,7 +641,7 @@ open class YFAlertController: UIViewController {
                 }
                 
                 if let maskLayer = containerView.layer.mask as? CAShapeLayer {
-                    maskLayer.path = UIBezierPath.init(roundedRect: containerView.bounds, byRoundingCorners: UIRectCorner.init(corner), cornerRadii: CGSize.init(width: cornerRadius, height: cornerRadius)).cgPath
+                    maskLayer.path = UIBezierPath(roundedRect: containerView.bounds, byRoundingCorners: UIRectCorner.init(corner), cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)).cgPath
                     maskLayer.frame = containerView.bounds
                 }
             } else {
@@ -655,7 +654,7 @@ open class YFAlertController: UIViewController {
         if needDialogBlur {
             containerView.backgroundColor = .clear
             
-            if dimmingKnockoutBackdropView != nil {
+            if dimmingKnockoutBackdropView == nil {
                 if let dimmingdropView = NSClassFromString("_UIDimmingKnockoutBackdropView")?.alloc() as? UIView {
                     // 下面4行相当于self.dimmingKnockoutBackdropView = [self.dimmingKnockoutBackdropView performSelector:NSSelectorFromString(@"initWithStyle:") withObject:@(UIBlurEffectStyleLight)];
                     let selector = NSSelectorFromString("initWithStyle:")
@@ -666,6 +665,7 @@ open class YFAlertController: UIViewController {
                     
                     dimmingdropView.frame = containerView.bounds
                     dimmingdropView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                    dimmingdropView.backgroundColor = YFAlertColorConfig.dynamicWhiteColor
                     self.containerView.insertSubview(dimmingdropView, at: 0)
                     dimmingKnockoutBackdropView = dimmingdropView
                 } else {
@@ -684,11 +684,7 @@ open class YFAlertController: UIViewController {
             if _customAlertView != nil {
                 containerView.backgroundColor = .clear
             } else {
-                if #available(iOS 13, *) {
-                    containerView.backgroundColor = .tertiarySystemBackground
-                } else {
-                    containerView.backgroundColor = .white
-                }
+                containerView.backgroundColor = YFAlertColorConfig.dynamicWhiteColor
             }
         }
     }
@@ -711,7 +707,7 @@ extension YFAlertController {
             alertControllerViewConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: visualFormat, options: [], metrics: nil, views: ["alertControllerView": alertControllerView]))
         } else {
             let centerXorY = (hv == "H") ? NSLayoutConstraint.Attribute.centerX : NSLayoutConstraint.Attribute.centerY
-            alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: centerXorY, relatedBy: .equal, toItem: alertControllerView.superview, attribute: centerXorY, multiplier: 1.0, constant: 0))
+            alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: centerXorY, relatedBy: .equal, toItem: alertControllerView.superview, attribute: centerXorY, multiplier: 1.0, constant: 0))
             if customViewSize.width > 0 {
                 // 如果宽度没有值，则会假定customAlertViewh水平方向能由子控件撑起
                 var alertControllerViewWidth: CGFloat = 0
@@ -720,7 +716,7 @@ extension YFAlertController {
                 } else {
                     alertControllerViewWidth = min(customViewSize.width, YFAlertConfig.screenWidth-minDistanceToEdges)
                 }
-                alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: alertControllerViewWidth))
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: alertControllerViewWidth))
             }
             if (customViewSize.height > 0) {
                 // 如果高度没有值，则会假定customAlertViewh垂直方向能由子控件撑起
@@ -730,12 +726,12 @@ extension YFAlertController {
                 } else {
                     alertControllerViewHeight = min(customViewSize.height, YFAlertConfig.screenHeight)
                 }
-                alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: alertControllerViewHeight))
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: alertControllerViewHeight))
             }
         }
         
-        alertControllerViewConstraints.append(NSLayoutConstraint.init(item: alertControllerView, attribute: equalAttribute, relatedBy: .equal, toItem: alertControllerView.superview, attribute: equalAttribute, multiplier: 1.0, constant: 0))
-        let someSideConstraint = NSLayoutConstraint.init(item: alertControllerView, attribute: notEqualAttribute, relatedBy: relation, toItem: alertControllerView.superview, attribute: notEqualAttribute, multiplier: 1.0, constant: minDistanceToEdges)
+        alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: equalAttribute, relatedBy: .equal, toItem: alertControllerView.superview, attribute: equalAttribute, multiplier: 1.0, constant: 0))
+        let someSideConstraint = NSLayoutConstraint(item: alertControllerView, attribute: notEqualAttribute, relatedBy: relation, toItem: alertControllerView.superview, attribute: notEqualAttribute, multiplier: 1.0, constant: minDistanceToEdges)
         someSideConstraint.priority = UILayoutPriority.init(999.0)
         alertControllerViewConstraints.append(someSideConstraint)
         NSLayoutConstraint.activate(alertControllerViewConstraints)
@@ -774,19 +770,19 @@ extension YFAlertController {
             if customViewSize.width > 0 {
                 let maxWidth = getMaxWidth()
                 let headerViewWidth = min(maxWidth, customViewSize.width)
-                headerViewConstraints.append(NSLayoutConstraint.init(item: headerV, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: headerViewWidth))
+                headerViewConstraints.append(NSLayoutConstraint(item: headerV, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: headerViewWidth))
             }
             if customViewSize.height > 0 {
-                let customHeightConstraint = NSLayoutConstraint.init(item: headerV, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.height)
+                let customHeightConstraint = NSLayoutConstraint(item: headerV, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.height)
                 customHeightConstraint.priority = .defaultHigh
                 headerViewConstraints.append(customHeightConstraint)
             }
-            headerViewConstraints.append(NSLayoutConstraint.init(item: headerV, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerX, multiplier: 1.0, constant: 0))
+            headerViewConstraints.append(NSLayoutConstraint(item: headerV, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerX, multiplier: 1.0, constant: 0))
         }
-        headerViewConstraints.append(NSLayoutConstraint.init(item: headerV, attribute: .top, relatedBy: .equal, toItem: alertView, attribute: .top, multiplier: 1.0, constant: 0))
+        headerViewConstraints.append(NSLayoutConstraint(item: headerV, attribute: .top, relatedBy: .equal, toItem: alertView, attribute: .top, multiplier: 1.0, constant: 0))
         
         if headerActionLine?.superview == nil {
-            headerViewConstraints.append(NSLayoutConstraint.init(item: headerV, attribute: .bottom, relatedBy: .equal, toItem: alertView, attribute: .bottom, multiplier: 1.0, constant: 0))
+            headerViewConstraints.append(NSLayoutConstraint(item: headerV, attribute: .bottom, relatedBy: .equal, toItem: alertView, attribute: .bottom, multiplier: 1.0, constant: 0))
         }
         NSLayoutConstraint.activate(headerViewConstraints)
         self.headerViewConstraints = headerViewConstraints
@@ -810,11 +806,11 @@ extension YFAlertController {
         
         var headerActionLineConstraints = [NSLayoutConstraint]()
         headerActionLineConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[headerActionLine]-0-|", options: [], metrics: nil, views: ["headerActionLine": headerActionLine]))
-        headerActionLineConstraints.append(NSLayoutConstraint.init(item: headerActionLine, attribute: .top, relatedBy: .equal, toItem: headerV, attribute: .bottom, multiplier: 1.0, constant: 0))
+        headerActionLineConstraints.append(NSLayoutConstraint(item: headerActionLine, attribute: .top, relatedBy: .equal, toItem: headerV, attribute: .bottom, multiplier: 1.0, constant: 0))
         if self.componentView?.superview == nil {
-            headerActionLineConstraints.append(NSLayoutConstraint.init(item: headerActionLine, attribute: .bottom, relatedBy: .equal, toItem: actionSequenceV, attribute: .top, multiplier: 1.0, constant: 0))
+            headerActionLineConstraints.append(NSLayoutConstraint(item: headerActionLine, attribute: .bottom, relatedBy: .equal, toItem: actionSequenceV, attribute: .top, multiplier: 1.0, constant: 0))
         }
-        headerActionLineConstraints.append(NSLayoutConstraint.init(item: headerActionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.minLineHeight))
+        headerActionLineConstraints.append(NSLayoutConstraint(item: headerActionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.minLineHeight))
         NSLayoutConstraint.activate(headerActionLineConstraints)
         self.headerActionLineConstraints = headerActionLineConstraints
     }
@@ -830,19 +826,19 @@ extension YFAlertController {
             self.componentViewConstraints = nil
         }
         var componentViewConstraints = [NSLayoutConstraint]()
-        componentViewConstraints.append(NSLayoutConstraint.init(item: componentView, attribute: .top, relatedBy: .equal, toItem: headerActionLine, attribute: .bottom, multiplier: 1.0, constant: 0))
-        componentViewConstraints.append(NSLayoutConstraint.init(item: componentView, attribute: .bottom, relatedBy: .equal, toItem: componentActionLine, attribute: .top, multiplier: 1.0, constant: 0))
-        componentViewConstraints.append(NSLayoutConstraint.init(item: componentView, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerX, multiplier: 1.0, constant: 0))
+        componentViewConstraints.append(NSLayoutConstraint(item: componentView, attribute: .top, relatedBy: .equal, toItem: headerActionLine, attribute: .bottom, multiplier: 1.0, constant: 0))
+        componentViewConstraints.append(NSLayoutConstraint(item: componentView, attribute: .bottom, relatedBy: .equal, toItem: componentActionLine, attribute: .top, multiplier: 1.0, constant: 0))
+        componentViewConstraints.append(NSLayoutConstraint(item: componentView, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerX, multiplier: 1.0, constant: 0))
         
         if customViewSize.height > 0 {
-            let heightConstraint = NSLayoutConstraint.init(item: componentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.height)
+            let heightConstraint = NSLayoutConstraint(item: componentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.height)
             heightConstraint.priority = .defaultHigh
             componentViewConstraints.append(heightConstraint)
         }
         if customViewSize.width > 0 {
             let maxWidth = getMaxWidth()
             let componentViewWidth = min(maxWidth, customViewSize.width)
-            componentViewConstraints.append(NSLayoutConstraint.init(item: componentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: componentViewWidth))
+            componentViewConstraints.append(NSLayoutConstraint(item: componentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: componentViewWidth))
         }
         NSLayoutConstraint.activate(componentViewConstraints)
         self.componentViewConstraints = componentViewConstraints
@@ -859,10 +855,10 @@ extension YFAlertController {
             self.componentActionLineConstraints = nil
         }
         var componentActionLineConstraints = [NSLayoutConstraint]()
-        componentActionLineConstraints.append(NSLayoutConstraint.init(item: componentActionLine, attribute: .bottom, relatedBy: .equal, toItem: actionSequenceView, attribute: .top, multiplier: 1.0, constant: 0))
+        componentActionLineConstraints.append(NSLayoutConstraint(item: componentActionLine, attribute: .bottom, relatedBy: .equal, toItem: actionSequenceView, attribute: .top, multiplier: 1.0, constant: 0))
         
         componentActionLineConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[componentActionLine]-0-|", options: [], metrics: nil, views: ["componentActionLine": componentActionLine]))
-        componentActionLineConstraints.append(NSLayoutConstraint.init(item: componentActionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.minLineHeight))
+        componentActionLineConstraints.append(NSLayoutConstraint(item: componentActionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.minLineHeight))
         NSLayoutConstraint.activate(componentActionLineConstraints)
         self.componentActionLineConstraints = componentActionLineConstraints
     }
@@ -887,21 +883,21 @@ extension YFAlertController {
                 if customViewSize.width > maxWidth {
                     customViewSize.width = maxWidth
                 }
-                actionSequenceViewConstraints.append(NSLayoutConstraint.init(item: actionSequenceView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.width))
+                actionSequenceViewConstraints.append(NSLayoutConstraint(item: actionSequenceView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.width))
             }
             
             if customViewSize.height > 0 {
-                let customHeightConstraint = NSLayoutConstraint.init(item: actionSequenceView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.height)
+                let customHeightConstraint = NSLayoutConstraint(item: actionSequenceView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customViewSize.height)
                 customHeightConstraint.priority = .defaultHigh
                 actionSequenceViewConstraints.append(customHeightConstraint)
             }
-            actionSequenceViewConstraints.append(NSLayoutConstraint.init(item: actionSequenceView, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerX, multiplier: 1.0, constant: 0))
+            actionSequenceViewConstraints.append(NSLayoutConstraint(item: actionSequenceView, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerX, multiplier: 1.0, constant: 0))
         }
        
         if headerActionLine == nil {
-            actionSequenceViewConstraints.append(NSLayoutConstraint.init(item: actionSequenceView, attribute: .top, relatedBy: .equal, toItem: alertView, attribute: .top, multiplier: 1.0, constant: 0))
+            actionSequenceViewConstraints.append(NSLayoutConstraint(item: actionSequenceView, attribute: .top, relatedBy: .equal, toItem: alertView, attribute: .top, multiplier: 1.0, constant: 0))
         }
-        actionSequenceViewConstraints.append(NSLayoutConstraint.init(item: actionSequenceView, attribute: .bottom, relatedBy: .equal, toItem: alertView, attribute: .bottom, multiplier: 1.0, constant: 0))
+        actionSequenceViewConstraints.append(NSLayoutConstraint(item: actionSequenceView, attribute: .bottom, relatedBy: .equal, toItem: alertView, attribute: .bottom, multiplier: 1.0, constant: 0))
         NSLayoutConstraint.activate(actionSequenceViewConstraints)
         self.actionSequenceViewConstraints = actionSequenceViewConstraints
     }
@@ -940,7 +936,7 @@ extension YFAlertController {
             // 如果action的标题文字总宽度，大于按钮的contentRect的宽度，
             // 则说明水平排列会导致文字显示不全，此时垂直排列
             if let attrs = action.attributedTitle {
-                let width = attrs.boundingRect(with: CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: YFAlertConfig.actionItemHeight), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil).size.width
+                let width = attrs.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: YFAlertConfig.actionItemHeight), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil).size.width
                 
                 if ceilf(Float(width)) > Float(preButtonWidth) {
 
@@ -952,7 +948,7 @@ extension YFAlertController {
                 
             } else {
                 guard let title = action.title else { return }
-                let width = title.boundingRect(with: CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: YFAlertConfig.actionItemHeight), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:[NSAttributedString.Key.font: action.titleFont], context: nil).size.width
+                let width = title.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: YFAlertConfig.actionItemHeight), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:[NSAttributedString.Key.font: action.titleFont], context: nil).size.width
                 if ceilf(Float(width)) > Float(preButtonWidth){
                     _actionAxis = .vertical
                     updateActionAxis()
@@ -997,7 +993,7 @@ extension YFAlertController {
         
         let width = max(settingSize.width, fittingSize.width)
         let height = max(settingSize.height, fittingSize.height)
-        return CGSize.init(width:width , height: height)
+        return CGSize(width:width , height: height)
     }
     
     private func setupPreferredMaxLayoutWidthForLabel(_ textLabel: UILabel) {

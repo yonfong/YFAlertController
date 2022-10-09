@@ -31,7 +31,8 @@ extension ViewController {
         if customBlur {
             alertController.customOverlayView = CustomOverlayView()
         } else {
-            alertController.setBackgroundViewBlurEffectStyle(style: appearanceStyle, alpha: 1)
+            let alpha = appearanceStyle != nil ? 1.0 : 0.5
+            alertController.setBackgroundViewBlurEffectStyle(style: appearanceStyle, alpha: alpha)
         }
         self.present(alertController, animated: true, completion: nil)
         

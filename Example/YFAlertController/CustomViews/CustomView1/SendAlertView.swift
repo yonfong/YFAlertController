@@ -45,20 +45,7 @@ class SendAlertView: UIView,Nibloadable {
         userIconView.layer.masksToBounds = true
         textView.delegate = self
         textView.layer.borderWidth = 0.5/UIScreen.main.scale
-//        textView.layer.borderColor = UIColor
-//        textView.placeholder = "给朋友留言"
-       // textView.placeholderColor = .l
-        /*
-        self.textView.layer.borderColor = [[UIColor grayColor] colorWithAlphaComponent:0.3].CGColor;
-        self.textView.placeholder = @"给朋友留言";
-        self.textView.placeholderColor = [UIColor lightGrayColor];
-         */
     }
-    
-    
-    
-    
-    
 }
 
 extension SendAlertView: UITextViewDelegate {

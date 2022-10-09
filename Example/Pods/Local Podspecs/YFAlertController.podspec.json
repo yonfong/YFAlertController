@@ -1,8 +1,8 @@
 {
   "name": "YFAlertController",
   "version": "0.1.0",
-  "summary": "A short description of YFAlertController.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "An iOS Customizable alert sheet Controller.",
+  "description": "YFAlertController is a framework that rewrite the [SPAlertController](https://github.com/SPStore/SPAlertController) in Swift.",
   "homepage": "https://github.com/yonfong/YFAlertController",
   "license": {
     "type": "MIT",

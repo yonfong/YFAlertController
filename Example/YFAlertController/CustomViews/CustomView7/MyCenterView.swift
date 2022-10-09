@@ -33,7 +33,7 @@ class MyCenterView: UIView, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "myCell")
         if cell == nil {
-            cell = UITableViewCell.init(style: .value1, reuseIdentifier: "myCell")
+            cell = UITableViewCell(style: .value1, reuseIdentifier: "myCell")
         }
         cell!.textLabel!.text = "第\(indexPath.row)行"
         cell!.textLabel!.font = UIFont.systemFont(ofSize: 14)
@@ -43,7 +43,7 @@ class MyCenterView: UIView, UITableViewDataSource {
     }
     
     lazy var tableView: UITableView = {
-        let tableV = UITableView.init(frame: .zero, style: .plain)
+        let tableV = UITableView(frame: .zero, style: .plain)
         tableV.dataSource = self
         tableV.showsVerticalScrollIndicator = false
         return tableV

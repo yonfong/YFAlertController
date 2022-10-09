@@ -367,7 +367,7 @@ extension YFAlertTransitionAnimator {
         // 第二：立即布局后可以获取到alertController.view的frame
         containerView.layoutIfNeeded()
         
-        alertController.view.transform = CGAffineTransform.init(scaleX: 0.9, y: 0.9)
+        alertController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         alertController.view.alpha = 0.0
         
         let duration = self.transitionDuration(using: transitionContext)
@@ -408,7 +408,7 @@ extension YFAlertTransitionAnimator {
         // 第二：立即布局后可以获取到alertController.view的frame
         containerView.layoutIfNeeded()
         
-        alertController.view.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
+        alertController.view.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         alertController.view.alpha = 0.0
         
         let duration = self.transitionDuration(using: transitionContext)

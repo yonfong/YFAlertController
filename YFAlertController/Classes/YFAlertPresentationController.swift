@@ -108,10 +108,10 @@ class YFAlertPresentationController: UIPresentationController {
             if let customView = customOverlayView {
                 _overlayView = customView
             } else {
-                _overlayView = YFOverlayView.init()
+                _overlayView = YFOverlayView()
             }
             _overlayView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            let tap = UITapGestureRecognizer.init(target: self, action: #selector(tapOverlayView))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(tapOverlayView))
             _overlayView!.addGestureRecognizer(tap)
             self.containerView?.insertSubview(_overlayView!, at: 0)
         }

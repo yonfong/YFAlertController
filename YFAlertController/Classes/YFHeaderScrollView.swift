@@ -8,7 +8,6 @@
 import UIKit
 
 class YFHeaderScrollView: UIScrollView {
-    
     public var imageLimitSize: CGSize = .zero
     public var contentEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
     public var headerViewSafeAreaDidChangeClosure: (()->Void)?
@@ -77,7 +76,7 @@ class YFHeaderScrollView: UIScrollView {
     }()
     
     lazy var textFieldView: UIStackView = {
-        let stackV = UIStackView.init()
+        let stackV = UIStackView()
         stackV.translatesAutoresizingMaskIntoConstraints = false
         stackV.distribution = .fillEqually
         stackV.axis = .vertical
@@ -96,7 +95,7 @@ extension YFHeaderScrollView {
         self.textFieldView.addArrangedSubview(textField)
         // 由于self.textFieldView是没有高度的，它的高度由子控件撑起，
         // 所以子控件必须要有高度
-        let heightConstraint = NSLayoutConstraint.init(item: textField, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: 30.0)
+        let heightConstraint = NSLayoutConstraint(item: textField, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: 30.0)
         heightConstraint.isActive = true
         // 当一个自定义view的某个属性发生改变，并且可能影响到constraint时，
         // 需要调用此方法去标记constraints需要在未来的某个点更新，
@@ -120,6 +119,18 @@ extension YFHeaderScrollView {
         // 这个block，主要是更新Label的最大预估宽度
         self.headerViewSafeAreaDidChangeClosure?()
         self.setNeedsUpdateConstraints()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if #available(iOS 13.0, *) {
+            let resolvedColor = YFAlertColorConfig.lineColor
+            
+            for textField in textFields {
+                textField.layer.borderColor = resolvedColor.cgColor
+            }
+        }
     }
     
     // 自定义view应该重写此方法在其中建立constraints
@@ -153,19 +164,19 @@ extension YFHeaderScrollView {
             let width = min(image.size.width, imageLimitSize.width)
             let height = min(image.size.height, imageLimitSize.height)
             
-            imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: width))
-            imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: height))
-            imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0))
-            imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: topMargin))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: width))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: height))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: topMargin))
             
             if !(titleLabel.text?.isEmpty ?? true) || titleLabel.attributedText != nil {
-                imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: titleLabel, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: titleLabel, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
             } else if !(messageLabel.text?.isEmpty ?? true) || messageLabel.attributedText != nil {
-                imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: messageLabel, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: messageLabel, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
             }  else if textFields.count > 0 {
-                imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: textFieldView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: textFieldView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
             } else {
-                imageViewConstraints.append(NSLayoutConstraint.init(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: -bottomMargin))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: -bottomMargin))
             }
             NSLayoutConstraint.activate(imageViewConstraints)
         }
@@ -186,21 +197,21 @@ extension YFHeaderScrollView {
             // 第一个子控件顶部间距
             if index == 0 {
                 if nil == imageView.image {
-                    titleLabelConstraints.append(NSLayoutConstraint.init(item: label, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: topMargin))
+                    titleLabelConstraints.append(NSLayoutConstraint(item: label, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: topMargin))
                 }
             }
             
             // 最后一个子控件底部间距
             if index == labels.count - 1 {
                 if textFields.count > 0 {
-                    titleLabelConstraints.append(NSLayoutConstraint.init(item: label, attribute: .bottom, relatedBy: .equal, toItem: textFieldView, attribute: .top, multiplier: 1.0, constant: -bottomMargin))
+                    titleLabelConstraints.append(NSLayoutConstraint(item: label, attribute: .bottom, relatedBy: .equal, toItem: textFieldView, attribute: .top, multiplier: 1.0, constant: -bottomMargin))
                 } else {
-                    titleLabelConstraints.append(NSLayoutConstraint.init(item: label, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: -bottomMargin))
+                    titleLabelConstraints.append(NSLayoutConstraint(item: label, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: -bottomMargin))
                 }
             }
             // 子控件之间的垂直间距
             if index > 0 {
-                titleLabelConstraints.append(NSLayoutConstraint.init(item: label, attribute: .top, relatedBy: .equal, toItem: labels[index-1], attribute: .bottom, multiplier: 1.0, constant: 7.5))
+                titleLabelConstraints.append(NSLayoutConstraint(item: label, attribute: .top, relatedBy: .equal, toItem: labels[index-1], attribute: .bottom, multiplier: 1.0, constant: 7.5))
             }
         }
         NSLayoutConstraint.activate(titleLabelConstraints)
@@ -210,11 +221,11 @@ extension YFHeaderScrollView {
             // 没有titleLabel、messageLabel和iconView，
             // textFieldView的顶部相对contentView,否则不用写,因为前面写好了
             if labels.count == 0 && imageView.image == nil {
-                textFieldViewConstraints.append(NSLayoutConstraint.init(item: textFieldView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: topMargin))
+                textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: topMargin))
             }
             
             textFieldViewConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-(==leftMargin)-[textFieldView]-(==rightMargin)-|", options: [], metrics: ["leftMargin": leftMargin, "rightMargin": rightMargin], views: ["textFieldView": textFieldView]))
-            textFieldViewConstraints.append(NSLayoutConstraint.init(item: textFieldView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: -bottomMargin))
+            textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: -bottomMargin))
             NSLayoutConstraint.activate(textFieldViewConstraints)
         }
         
@@ -222,7 +233,7 @@ extension YFHeaderScrollView {
         // 如果子控件是UILabel，那么子label必须设置preferredMaxLayoutWidth
         // 否则当label多行文本时计算不准确
         let constantH = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        let contentViewHeightConstraint = NSLayoutConstraint.init(item: contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: constantH)
+        let contentViewHeightConstraint = NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: constantH)
         contentViewHeightConstraint.isActive = true
     }
 }

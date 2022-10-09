@@ -9,7 +9,7 @@
 import UIKit
 import YFAlertController
 
-let SYSTEM_COLOR = UIColor.init(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)
+let SYSTEM_COLOR = UIColor(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)
 let ScreenWidth: CGFloat = UIScreen.main.bounds.size.width
 let ScreenHeight: CGFloat = UIScreen.main.bounds.size.height
 
@@ -57,15 +57,15 @@ class ViewController: UIViewController {
     }
     
     private func setupNav() {
-        let changeBgBtn = UIButton.init(type: .custom)
+        let changeBgBtn = UIButton(type: .custom)
         changeBgBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         changeBgBtn.setTitleColor(.black, for: .normal)
         changeBgBtn.setTitleColor(.blue, for: .selected)
         changeBgBtn.setTitle("切换背景", for: .normal)
         changeBgBtn.addTarget(self, action: #selector(changeBackgroundImage(btn:)), for: .touchUpInside)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: changeBgBtn)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: changeBgBtn)
         
-        blurBtn = UIButton.init(type: .custom)
+        blurBtn = UIButton(type: .custom)
         blurBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         blurBtn.setTitleColor(.black, for: .normal)
         blurBtn.setTitleColor(.blue, for: .selected)
@@ -73,13 +73,13 @@ class ViewController: UIViewController {
         blurBtn.setTitle("关闭毛玻璃", for: .selected)
         blurBtn.addTarget(self, action: #selector(lookBlurAction(btn:)), for: .touchUpInside)
         
-        customBlurBtn = UIButton.init(type: .custom)
+        customBlurBtn = UIButton(type: .custom)
         customBlurBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         customBlurBtn.setTitleColor(.black, for: .normal)
         customBlurBtn.setTitleColor(.blue, for: .selected)
         customBlurBtn.setTitle("自定义毛玻璃", for: .normal)
         customBlurBtn.addTarget(self, action: #selector(customBlurAction(btn:)), for: .touchUpInside)
-        self.navigationItem.rightBarButtonItems = [UIBarButtonItem.init(customView: customBlurBtn), UIBarButtonItem.init(customView: blurBtn)]
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: customBlurBtn), UIBarButtonItem(customView: blurBtn)]
     }
     
     @objc func customBlurAction(btn: UIButton) {
@@ -94,7 +94,7 @@ class ViewController: UIViewController {
     
     @objc func changeBackgroundImage(btn: UIButton) {
         if btn.isSelected == false{
-            tableView.backgroundView = UIImageView.init(image: UIImage.init(named: "背景2.jpg"))
+            tableView.backgroundView = UIImageView(image: UIImage(named: "背景2.jpg"))
             haveBg = true
         } else {
             haveBg = false
@@ -137,7 +137,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerID)
         if header == nil {
-            header = UITableViewHeaderFooterView.init(reuseIdentifier: headerID)
+            header = UITableViewHeaderFooterView(reuseIdentifier: headerID)
             let label = UILabel()
             label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             label.tag = 200

@@ -28,12 +28,12 @@ class CommodityListView: UIView {
         }
         var lastImageView: UIImageView!
         for (index,imgView) in imageViews.enumerated() {
-            imgView.frame = CGRect.init(x: (imageViewW + 10.0) * CGFloat(index), y: imageViewY, width: imageViewW, height: imageViewH)
+            imgView.frame = CGRect(x: (imageViewW + 10.0) * CGFloat(index), y: imageViewY, width: imageViewW, height: imageViewH)
             if index == self.imageViews.count-1 {
                 lastImageView = imgView
             }
         }
-        scrollView.contentSize = CGSize.init(width: lastImageView.frame.maxX, height: 0)
+        scrollView.contentSize = CGSize(width: lastImageView.frame.maxX, height: 0)
     }
     
     required init?(coder: NSCoder) {
@@ -45,11 +45,11 @@ class CommodityListView: UIView {
     
     lazy var scrollView: UIScrollView = {
         let scrollV = UIScrollView()
-        scrollV.backgroundColor = UIColor.init(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+        scrollV.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
         scrollV.showsVerticalScrollIndicator = false
         
         for (index,imgName) in images.enumerated() {
-            let imageView = UIImageView.init(image: UIImage.init(named: imgName))
+            let imageView = UIImageView(image: UIImage(named: imgName))
             imageView.backgroundColor = .red
             scrollV.addSubview(imageView)
             imageViews.append(imageView)

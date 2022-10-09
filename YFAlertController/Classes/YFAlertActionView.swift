@@ -87,12 +87,12 @@ class YFAlertActionView: UIView {
             relation = .greaterThanOrEqual
         }
         // 如果字体保持默认18号，只有一行文字时最终结果约等于YFAlertConfig.actionItemHeight
-        let buttonHonstraint = NSLayoutConstraint.init(item: actionButton, attribute: .height, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: buttonH)
+        let buttonHonstraint = NSLayoutConstraint(item: actionButton, attribute: .height, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: buttonH)
         buttonHonstraint.priority = UILayoutPriority(rawValue: 999)
         actionButtonConstraints.append(buttonHonstraint)
         
         // 给一个最小高度，当按钮字体很小时，如果还按照上面的高度计算，高度会比较小
-        let minHConstraint = NSLayoutConstraint.init(item: actionButton, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.actionItemHeight+topBottom_insetsSum)
+        let minHConstraint = NSLayoutConstraint(item: actionButton, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.actionItemHeight+topBottom_insetsSum)
         minHConstraint.priority = UILayoutPriority.required
         self.addConstraints(actionButtonConstraints)
     }
@@ -102,12 +102,12 @@ class YFAlertActionView: UIView {
         if bottom > 21 {// 34的高度太大，这里转为21
             bottom = 21
         }
-        return .init(top: i1.top+i2.top, left: i1.left+i2.left, bottom: bottom+i2.bottom, right: i1.right+i2.right)
+        return UIEdgeInsets(top: i1.top+i2.top, left: i1.left+i2.left, bottom: bottom+i2.bottom, right: i1.right+i2.right)
      }
     
     
     lazy var actionButton: UIButton = {
-        let btn = UIButton.init(type: .custom)
+        let btn = UIButton(type: .custom)
         btn.backgroundColor = YFAlertColorConfig.normalColor
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.titleLabel?.textAlignment = .center
@@ -135,7 +135,7 @@ class YFAlertActionView: UIView {
              self.actionButton.isEnabled = action.isEnabled
              if action.attributedTitle != nil {
                  // 这里之所以要设置按钮颜色为黑色，是因为如果外界在addAction:之后设置按钮的富文本，那么富文本的颜色在没有采用NSForegroundColorAttributeName的情况下会自动读取按钮上普通文本的颜色，在addAction:之前设置会保持默认色(黑色)，为了在addAction:前后设置富文本保持统一，这里先将按钮置为黑色，富文本就会是黑色
-                 self.actionButton.setTitleColor(.black, for: .normal)
+                 self.actionButton.setTitleColor(YFAlertColorConfig.dynamicBlackColor, for: .normal)
                  if action.attributedTitle!.string.contains("\n") || action.attributedTitle!.string.contains("\r") {
                      self.actionButton.titleLabel?.lineBreakMode = .byWordWrapping
                  }
@@ -153,8 +153,8 @@ class YFAlertActionView: UIView {
                  
              }
              self.actionButton.setImage(action.image, for: .normal)
-             self.actionButton.titleEdgeInsets = .init(top: 0, left: action.imageTitleSpacing, bottom: 0, right: -action.imageTitleSpacing)
-             self.actionButton.imageEdgeInsets = .init(top: 0, left: -action.imageTitleSpacing, bottom: 0, right: action.imageTitleSpacing)
+             self.actionButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: action.imageTitleSpacing, bottom: 0, right: -action.imageTitleSpacing)
+             self.actionButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -action.imageTitleSpacing, bottom: 0, right: action.imageTitleSpacing)
          }
      }
     

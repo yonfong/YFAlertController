@@ -139,7 +139,7 @@ extension ViewController {
     //示例14:alert 设置头部图标
     func alertTest6() {
         let alert = YFAlertController.alertController(title: "“支付宝”的触控 ID", message: "请验证已有指纹", preferredStyle: .alert, animationType: .shrink)
-        alert.image = UIImage.init(named: "zhiwen")
+        alert.image = UIImage(named: "zhiwen")
         let action = YFAlertAction.action(withTitle: "取消", style: .cancel) { (action) in
             print("点击了取消")
         }
