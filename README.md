@@ -13,12 +13,14 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-YFAlertController is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+#### CocoaPods:
+`pod 'YFAlertController'`
 
-```ruby
-pod 'YFAlertController'
-```
+#### [Swift Package Manager](https://github.com/apple/swift-package-manager):
+1. File > Swift Packages > Add Package Dependency
+2. Add https://github.com/yonfong/YFAlertController.git
+3. Select "Up to Next Major" with "0.4.0"
+
 
 ## Author
 
