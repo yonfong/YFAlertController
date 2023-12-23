@@ -5,7 +5,7 @@
 //  Created by sky on 2022/10/3.
 //
 
-import Foundation
+import UIKit
 
 open class YFAlertAction: NSObject {
     
