@@ -68,20 +68,23 @@ class YFAlertActionView: UIView {
             self.actionButtonConstraints.removeAll()
         }
         
-        actionButtonConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[actionButton]-0-|", options: [], metrics: nil, views: ["actionButton": actionButton]))
-        actionButtonConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[actionButton]-0-|", options: [], metrics: nil, views: ["actionButton": actionButton]))
+        actionButtonConstraints.append(NSLayoutConstraint(item: actionButton, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0))
+        actionButtonConstraints.append(NSLayoutConstraint(item: actionButton, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0))
+        actionButtonConstraints.append(NSLayoutConstraint(item: actionButton, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0))
+        actionButtonConstraints.append(NSLayoutConstraint(item: actionButton, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0))
+        
         // 按钮必须确认高度，因为其父视图及父视图的父视图乃至根视图都没有设置高度，而且必须用NSLayoutRelationEqual，如果用NSLayoutRelationGreaterThanOrEqual,虽然也能撑起父视图，但是当某个按钮的高度有所变化以后，stackView会将其余按钮按的高度同比增减
         
         // titleLabel的内容自适应的高度 55
         let labelH: CGFloat = actionButton.titleLabel?.intrinsicContentSize.height ?? 0.0
         // 按钮的上下内边距之和 0
-        let topBottom_insetsSum: CGFloat = actionButton.contentEdgeInsets.top+actionButton.contentEdgeInsets.bottom
-        // 文字的上下间距之和,等于YFAlertConfig.actionItemHeight-默认字体大小,这是为了保证文字上下有一个固定间距值，不至于使文字靠按钮太紧，,由于按钮内容默认垂直居中，所以最终的顶部或底部间距为topBottom_marginSum/2.0,这个间距，几乎等于18号字体时，最小高度为49时的上下间距 33.5
+        let topBottom_insetsSum: CGFloat = actionButton.contentEdgeInsets.top + actionButton.contentEdgeInsets.bottom
+        //文字的上下间距之和,等于YFAlertConfig.actionItemHeight-默认字体大小,这是为了保证文字上下有一个固定间距值，不至于使文字靠按钮太紧，,由于按钮内容默认垂直居中，所以最终的顶部或底部间距为topBottom_marginSum/2.0,这个间距，几乎等于18号字体时，最小高度为49时的上下间距 33.5
         let topBottom_marginSum: CGFloat = YFAlertConfig.actionItemHeight - UIFont.systemFont(ofSize: YFAlertConfig.actionTitleFontSize).lineHeight
         
         // 按钮高度
-        let buttonH = labelH+topBottom_insetsSum+topBottom_marginSum
-        
+        let buttonH = labelH + topBottom_insetsSum + topBottom_marginSum
+
         var relation = NSLayoutConstraint.Relation.equal
         if let stackView = self.superview as? UIStackView, stackView.axis == .horizontal {
             relation = .greaterThanOrEqual
@@ -92,7 +95,7 @@ class YFAlertActionView: UIView {
         actionButtonConstraints.append(buttonHonstraint)
         
         // 给一个最小高度，当按钮字体很小时，如果还按照上面的高度计算，高度会比较小
-        let minHConstraint = NSLayoutConstraint(item: actionButton, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.actionItemHeight+topBottom_insetsSum)
+        let minHConstraint = NSLayoutConstraint(item: actionButton, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.actionItemHeight + topBottom_insetsSum)
         minHConstraint.priority = UILayoutPriority.required
         self.addConstraints(actionButtonConstraints)
     }
@@ -134,7 +137,7 @@ class YFAlertActionView: UIView {
              self.actionButton.contentEdgeInsets = action.titleEdgeInsets
              self.actionButton.isEnabled = action.isEnabled
              if action.attributedTitle != nil {
-                 // 这里之所以要设置按钮颜色为黑色，是因为如果外界在addAction:之后设置按钮的富文本，那么富文本的颜色在没有采用NSForegroundColorAttributeName的情况下会自动读取按钮上普通文本的颜色，在addAction:之前设置会保持默认色(黑色)，为了在addAction:前后设置富文本保持统一，这里先将按钮置为黑色，富文本就会是黑色
+                 //这里之所以要设置按钮颜色为黑色，是因为如果外界在addAction:之后设置按钮的富文本，那么富文本的颜色在没有采用NSForegroundColorAttributeName的情况下会自动读取按钮上普通文本的颜色，在addAction:之前设置会保持默认色(黑色)，为了在addAction:前后设置富文本保持统一，这里先将按钮置为黑色，富文本就会是黑色
                  self.actionButton.setTitleColor(YFAlertColorConfig.dynamicBlackColor, for: .normal)
                  if action.attributedTitle!.string.contains("\n") || action.attributedTitle!.string.contains("\r") {
                      self.actionButton.titleLabel?.lineBreakMode = .byWordWrapping
@@ -143,22 +146,16 @@ class YFAlertActionView: UIView {
                  // 设置完富文本之后，还原按钮普通文本的颜色，其实这行代码加不加都不影响，只是为了让按钮普通文本的颜色保持跟action.titleColor一致
                  self.actionButton.setTitleColor(action.titleColor, for: .normal)
              } else {
-                
                 if let title = action.title {
                     if title.contains("\n") || title.contains("\r") {
                         self.actionButton.titleLabel?.lineBreakMode = .byWordWrapping
                     }
                     self.actionButton.setTitle(title, for: .normal)
                 }
-                 
              }
              self.actionButton.setImage(action.image, for: .normal)
              self.actionButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: action.imageTitleSpacing, bottom: 0, right: -action.imageTitleSpacing)
              self.actionButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -action.imageTitleSpacing, bottom: 0, right: action.imageTitleSpacing)
          }
      }
-    
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
 }

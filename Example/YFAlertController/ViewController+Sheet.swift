@@ -108,7 +108,19 @@ extension ViewController {
         let action4 = YFAlertAction.action(withTitle: "第4个", style: .default) { (action) in
             print("点击了第4个")
         }
-        let action5 = YFAlertAction.action(withTitle: "取消", style: .cancel) { (action) in
+        let action5 = YFAlertAction.action(withTitle: "取消", style: .default) { (action) in
+            print("点击了cancel")
+        }
+        
+        let action6 = YFAlertAction.action(withTitle: "取消", style: .default) { (action) in
+            print("点击了cancel")
+        }
+        
+        let action7 = YFAlertAction.action(withTitle: "取消", style: .default) { (action) in
+            print("点击了cancel")
+        }
+        
+        let action8 = YFAlertAction.action(withTitle: "取消", style: .cancel) { (action) in
             print("点击了cancel")
         }
         if customBlur {
@@ -119,6 +131,9 @@ extension ViewController {
         alertController.addAction(action: action3)
         alertController.addAction(action: action4)
         alertController.addAction(action: action5)
+        alertController.addAction(action: action6)
+        alertController.addAction(action: action7)
+        alertController.addAction(action: action8)
         self.present(alertController, animated: true, completion: nil)
     }
     // 示例6:actionSheet 水平排列（无取消按钮）

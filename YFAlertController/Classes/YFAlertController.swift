@@ -401,7 +401,6 @@ open class YFAlertController: UIViewController {
     
     // MARK: - Lifecycle
     deinit {
-        debugPrint("\(self.description) deinit")
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -703,10 +702,15 @@ extension YFAlertController {
         
         var alertControllerViewConstraints = [NSLayoutConstraint]()
         if self.customAlertView == nil {
-            let visualFormat = "\(hv):|-0-[alertControllerView]-0-|"
-            alertControllerViewConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: visualFormat, options: [], metrics: nil, views: ["alertControllerView": alertControllerView]))
+            if hv == "H" {
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .leading, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .leading, multiplier: 1.0, constant: 0))
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .trailing, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .trailing, multiplier: 1.0, constant: 0))
+            } else {
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .top, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .top, multiplier: 1.0, constant: 0))
+                alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: .bottom, relatedBy: .equal, toItem: alertControllerView.superview, attribute: .bottom, multiplier: 1.0, constant: 0))
+            }
         } else {
-            let centerXorY = (hv == "H") ? NSLayoutConstraint.Attribute.centerX : NSLayoutConstraint.Attribute.centerY
+            let centerXorY = (hv == "H") ? .centerX : NSLayoutConstraint.Attribute.centerY
             alertControllerViewConstraints.append(NSLayoutConstraint(item: alertControllerView, attribute: centerXorY, relatedBy: .equal, toItem: alertControllerView.superview, attribute: centerXorY, multiplier: 1.0, constant: 0))
             if customViewSize.width > 0 {
                 // 如果宽度没有值，则会假定customAlertViewh水平方向能由子控件撑起
@@ -756,16 +760,16 @@ extension YFAlertController {
     private func layoutHeaderView() {
         let headerVTemp = customHeaderView != nil ? customHeaderView! : self.headerView
         guard let headerV = headerVTemp else { return }
-        if headerV.superview == nil {
-            return
-        }
+        guard let headerSuperView = headerV.superview else { return }
+        
         if let constraints = self.headerViewConstraints {
             NSLayoutConstraint.deactivate(constraints)
             self.headerViewConstraints = nil
         }
         var headerViewConstraints = [NSLayoutConstraint]()
         if customHeaderView == nil {
-            headerViewConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[headerV]-0-|", options: [], metrics: nil, views: ["headerV": headerV]))
+            headerViewConstraints.append(NSLayoutConstraint(item: headerV, attribute: .leading, relatedBy: .equal, toItem: headerSuperView, attribute: .leading, multiplier: 1.0, constant: 0))
+            headerViewConstraints.append(NSLayoutConstraint(item: headerV, attribute: .trailing, relatedBy: .equal, toItem: headerSuperView, attribute: .trailing, multiplier: 1.0, constant: 0))
         } else {
             if customViewSize.width > 0 {
                 let maxWidth = getMaxWidth()
@@ -791,9 +795,7 @@ extension YFAlertController {
     // 对头部和action部分之间的分割线布局
     private func layoutHeaderActionLine() {
         guard let headerActionLine = headerActionLine else { return }
-        if headerActionLine.superview == nil {
-            return
-        }
+        guard let headerActionLineSuperView = headerActionLine.superview else { return }
 
         let headerVTemp = customHeaderView != nil ? customHeaderView! : headerView
         guard let headerV = headerVTemp else { return }
@@ -805,7 +807,8 @@ extension YFAlertController {
         }
         
         var headerActionLineConstraints = [NSLayoutConstraint]()
-        headerActionLineConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[headerActionLine]-0-|", options: [], metrics: nil, views: ["headerActionLine": headerActionLine]))
+        headerActionLineConstraints.append(NSLayoutConstraint(item: headerActionLine, attribute: .leading, relatedBy: .equal, toItem: headerActionLineSuperView, attribute: .leading, multiplier: 1.0, constant: 0))
+        headerActionLineConstraints.append(NSLayoutConstraint(item: headerActionLine, attribute: .trailing, relatedBy: .equal, toItem: headerActionLineSuperView, attribute: .trailing, multiplier: 1.0, constant: 0))
         headerActionLineConstraints.append(NSLayoutConstraint(item: headerActionLine, attribute: .top, relatedBy: .equal, toItem: headerV, attribute: .bottom, multiplier: 1.0, constant: 0))
         if self.componentView?.superview == nil {
             headerActionLineConstraints.append(NSLayoutConstraint(item: headerActionLine, attribute: .bottom, relatedBy: .equal, toItem: actionSequenceV, attribute: .top, multiplier: 1.0, constant: 0))
@@ -847,17 +850,16 @@ extension YFAlertController {
     // 对组件view与action部分之间的分割线布局
     private func layoutComponentActionLine() {
         guard let componentActionLine = componentActionLine else { return }
-        if componentActionLine.superview == nil {
-            return
-        }
+        guard let componentActionLineSuperView = componentActionLine.superview else { return }
+        
         if let constraints = self.componentActionLineConstraints {
             NSLayoutConstraint.deactivate(constraints)
             self.componentActionLineConstraints = nil
         }
         var componentActionLineConstraints = [NSLayoutConstraint]()
         componentActionLineConstraints.append(NSLayoutConstraint(item: componentActionLine, attribute: .bottom, relatedBy: .equal, toItem: actionSequenceView, attribute: .top, multiplier: 1.0, constant: 0))
-        
-        componentActionLineConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[componentActionLine]-0-|", options: [], metrics: nil, views: ["componentActionLine": componentActionLine]))
+        componentActionLineConstraints.append(NSLayoutConstraint(item: componentActionLine, attribute: .leading, relatedBy: .equal, toItem: componentActionLineSuperView, attribute: .leading, multiplier: 1.0, constant: 0))
+        componentActionLineConstraints.append(NSLayoutConstraint(item: componentActionLine, attribute: .trailing, relatedBy: .equal, toItem: componentActionLineSuperView, attribute: .trailing, multiplier: 1.0, constant: 0))
         componentActionLineConstraints.append(NSLayoutConstraint(item: componentActionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: YFAlertConfig.minLineHeight))
         NSLayoutConstraint.activate(componentActionLineConstraints)
         self.componentActionLineConstraints = componentActionLineConstraints
@@ -866,9 +868,7 @@ extension YFAlertController {
     private func layoutActionSequenceView() {
         let actionSequenceViewTemp = customActionSequenceView != nil ? customActionSequenceView! : self.actionSequenceView
         guard let actionSequenceView = actionSequenceViewTemp else { return }
-        if actionSequenceView.superview == nil {
-            return
-        }
+        guard let actionSequenceViewSuperView = actionSequenceView.superview else { return }
         
         if let constraints = self.actionSequenceViewConstraints {
             NSLayoutConstraint.deactivate(constraints)
@@ -876,7 +876,8 @@ extension YFAlertController {
         }
         var actionSequenceViewConstraints = [NSLayoutConstraint]()
         if customActionSequenceView == nil {
-            actionSequenceViewConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[actionSequenceView]-0-|", options: [], metrics: nil, views: ["actionSequenceView": actionSequenceView]))
+            actionSequenceViewConstraints.append(NSLayoutConstraint(item: actionSequenceView, attribute: .leading, relatedBy: .equal, toItem: actionSequenceViewSuperView, attribute: .leading, multiplier: 1.0, constant: 0))
+            actionSequenceViewConstraints.append(NSLayoutConstraint(item: actionSequenceView, attribute: .trailing, relatedBy: .equal, toItem: actionSequenceViewSuperView, attribute: .trailing, multiplier: 1.0, constant: 0))
         } else {
             if customViewSize.width > 0 {
                 let maxWidth = getMaxWidth()

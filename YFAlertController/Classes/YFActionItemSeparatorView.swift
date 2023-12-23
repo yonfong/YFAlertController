@@ -26,8 +26,4 @@ class YFActionItemSeparatorView: UIView {
         
         self.backgroundColor = min(frame.width, frame.height) > YFAlertConfig.minLineHeight ? YFAlertColorConfig.secondaryLineColor : YFAlertColorConfig.lineColor
     }
-    
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
 }

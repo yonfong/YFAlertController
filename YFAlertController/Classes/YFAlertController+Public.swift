@@ -82,26 +82,14 @@ public extension YFAlertController {
         } else if !self.otherActions.contains(action) {
             print("*** warning in -[YFAlertController setCustomSpacing:afterAction:]: 'the -action must be contained in the -actions array, not a action with YFAlertActionStyleCancel style'")
         } else {
-            var index: Int = 0
-            for item in self.otherActions {
-                if item == action  {
-                    break
-                }
-                index += 1
-            }
+            let index = otherActions.firstIndex{$0 == action} ?? 0
             actionSequenceView?.setCustomSpacing(spacing: spacing, afterActionIndex: index)
         }
     }
     @available(iOS 11.0, *)
     func customSpacing(aferAction action: YFAlertAction) -> CGFloat {
-        if self.otherActions.contains(action) == true {
-            var index: Int = 0
-            for item in self.otherActions {
-                if item == action  {
-                    break
-                }
-                index += 1
-            }
+        if self.otherActions.contains(action) {
+            let index = otherActions.firstIndex{$0 == action} ?? 0
             return actionSequenceView!.customSpacingAfterActionIndex(index)
         }
         return 0.0
@@ -184,13 +172,7 @@ public extension YFAlertController {
             guard let `self` = self else { return }
             if self.preferredStyle == .alert {
                 // alert样式下：arrangedSubviews数组和actions是对应的
-                var index: Int = 0
-                for (i, item) in self.actions.enumerated() {
-                    if item == action {
-                        index = i
-                        break
-                    }
-                }
+                let index = actions.firstIndex{$0 == action} ?? 0
                 if let actionView = self.actionSequenceView?.stackView.arrangedSubviews[index] as?  YFAlertActionView {
                     actionView.action = action
                 }
@@ -209,13 +191,7 @@ public extension YFAlertController {
                     
                 } else {
                     // actionSheet样式下：arrangedSubviews数组和otherActions是对应的
-                    var index: Int = 0
-                    for (i, item) in self.otherActions.enumerated() {
-                        if item == action {
-                            index = i
-                            break
-                        }
-                    }
+                    let index = otherActions.firstIndex{$0 == action} ?? 0
                     if let actionView = self.actionSequenceView?.stackView.arrangedSubviews[index] as?  YFAlertActionView {
                         actionView.action = action
                     }

@@ -21,10 +21,6 @@ class YFOverlayView: UIView {
         self.isUserInteractionEnabled = true
     }
         
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
-    
     func configBlurEffectStyle(style: UIBlurEffect.Style?, alpha: CGFloat) {
         effectView?.removeFromSuperview()
         effectView = nil

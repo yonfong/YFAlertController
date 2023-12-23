@@ -24,10 +24,6 @@ class YFAlertTransitionAnimator: NSObject {
         super.init()
         self.isPresenting = isPresenting
     }
-    
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
 }
 
 extension YFAlertTransitionAnimator: UIViewControllerAnimatedTransitioning {

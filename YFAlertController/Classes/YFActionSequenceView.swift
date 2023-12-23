@@ -8,10 +8,10 @@
 import UIKit
 
 class YFActionSequenceView: UIView {
-    var actions: [YFAlertAction] = [YFAlertAction]()
+    var actions: [YFAlertAction] = []
     private var textFieldView: UIStackView?
     private var cancelAction: YFAlertAction?
-    private var actionLineConstraints: [NSLayoutConstraint] = [NSLayoutConstraint]()
+    private var actionLineConstraints: [NSLayoutConstraint] = []
     public var stackViewDistribution: UIStackView.Distribution? {
         didSet {
             if let value = stackViewDistribution{
@@ -23,19 +23,15 @@ class YFActionSequenceView: UIView {
     
     public var axis: NSLayoutConstraint.Axis = .horizontal {
         didSet {
-           // if let value = axis {
-                self.stackView.axis = axis
-                //当一个自定义view的某个属性发生改变，并且可能影响到constraint时，需要调用此方法去标记constraints需要在未来的某个点更新，系统然后调用updateConstraints.
-                self.setNeedsUpdateConstraints()
-           // }
+            self.stackView.axis = axis
+            //当一个自定义view的某个属性发生改变，并且可能影响到constraint时，需要调用此方法去标记constraints需要在未来的某个点更新，系统然后调用updateConstraints.
+            self.setNeedsUpdateConstraints()
         }
     }
     
     public var buttonClickedInActionViewClosure: ((Int)-> Void)?
     
-    
     @objc func buttonClickedInActionView(actionView: YFAlertActionView) {
-        
         var index: Int = 0
         for i in 0..<self.actions.count {
             if actionView.action == self.actions[i] {
@@ -99,10 +95,6 @@ class YFActionSequenceView: UIView {
         }
         return cancelLine
     }()
-    
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
 }
 
 extension YFActionSequenceView {
@@ -150,9 +142,14 @@ extension YFActionSequenceView {
         cancelActionView.action = action
         cancelActionView.addTarget(target: self, action: #selector(buttonClickedInActionView(actionView:)))
         cancelView.addSubview(cancelActionView)
+        
+        let leadingConstraint = NSLayoutConstraint(item: cancelActionView, attribute: .leading, relatedBy: .equal, toItem: cancelView, attribute: .leading, multiplier: 1.0, constant: 0)
+        let trailingConstraint = NSLayoutConstraint(item: cancelActionView, attribute: .trailing, relatedBy: .equal, toItem: cancelView, attribute: .trailing, multiplier: 1.0, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: cancelActionView, attribute: .top, relatedBy: .equal, toItem: cancelView, attribute: .top, multiplier: 1.0, constant: 0)
+        let bottomConstraint = NSLayoutConstraint(item: cancelActionView, attribute: .bottom, relatedBy: .equal, toItem: cancelView, attribute: .bottom, multiplier: 1.0, constant: 0)
+        
+        cancelView.addConstraints([leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
 
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cancelActionView]-0-|", options: [], metrics: nil, views: ["cancelActionView": cancelActionView]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cancelActionView]-0-|", options: [], metrics: nil, views: ["cancelActionView": cancelActionView]))
         self.setNeedsUpdateConstraints()
     }
     
@@ -188,18 +185,22 @@ extension YFActionSequenceView {
  
            // guard let axis = axis else { return }
             if axis == .horizontal {
-                actionLineConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[actionLine]-0-|", options: [], metrics: nil, views: ["actionLine": actionLine]))
-                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .left, relatedBy: .equal, toItem: actionView1, attribute: .right, multiplier: 1.0, constant: 0))
-                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .right, relatedBy: .equal, toItem: actionView2, attribute: .left, multiplier: 1.0, constant: 0))
-                
-                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: actionView1.afterSpacing))
+                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .top, relatedBy: .equal, toItem: stackView, attribute: .top, multiplier: 1.0, constant: 0))
+                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .bottom, relatedBy: .equal, toItem: stackView, attribute: .bottom, multiplier: 1.0, constant: 0))
+                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .leading, relatedBy: .equal, toItem: actionView1, attribute: .trailing, multiplier: 1.0, constant: 0))
+                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .trailing, relatedBy: .equal, toItem: actionView2, attribute: .leading, multiplier: 1.0, constant: 0))
+                let lineWidhtContraint = NSLayoutConstraint(item: actionLine, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: actionView1.afterSpacing)
+                lineWidhtContraint.priority = UILayoutPriority.defaultLow
+                actionLineConstraints.append(lineWidhtContraint)
             } else {
-                
-                actionLineConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[actionLine]-0-|", options: [], metrics: nil, views: ["actionLine": actionLine]))
+                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .leading, relatedBy: .equal, toItem: stackView, attribute: .leading, multiplier: 1.0, constant: 0))
+                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .trailing, relatedBy: .equal, toItem: stackView, attribute: .trailing, multiplier: 1.0, constant: 0))
                 actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .top, relatedBy: .equal, toItem: actionView1, attribute: .bottom, multiplier: 1.0, constant: 0))
                 actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .bottom, relatedBy: .equal, toItem: actionView2, attribute: .top, multiplier: 1.0, constant: 0))
                 
-                actionLineConstraints.append(NSLayoutConstraint(item: actionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: actionView1.afterSpacing))
+                let lineHeightConstraint = NSLayoutConstraint(item: actionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: actionView1.afterSpacing)
+                lineHeightConstraint.priority = UILayoutPriority.defaultLow
+                actionLineConstraints.append(lineHeightConstraint)
             }
         }
         NSLayoutConstraint.activate(actionLineConstraints)
@@ -215,8 +216,8 @@ extension YFActionSequenceView {
         if scrollView.superview != nil {
             // 对scrollView布局
             var scrollViewConstraints = [NSLayoutConstraint]()
-            
-            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[scrollView]-0-|", options: [], metrics: nil, views: ["scrollView": scrollView]))
+            scrollViewConstraints.append(NSLayoutConstraint(item: scrollView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0))
+            scrollViewConstraints.append(NSLayoutConstraint(item: scrollView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0))
             scrollViewConstraints.append(NSLayoutConstraint(item: scrollView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0))
             
             if cancelActionLine.superview != nil {
@@ -228,63 +229,72 @@ extension YFActionSequenceView {
             NSLayoutConstraint.deactivate(scrollView.constraints)
             
             // 对contentView布局
-            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[contentView]-0-|", options: [], metrics: nil, views: ["contentView": contentView]))
-            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[contentView]-0-|", options: [], metrics: nil, views: ["contentView": contentView]))
-            let constraint = NSLayoutConstraint(item: contentView, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1.0, constant: 0)
-            constraint.isActive = true
-            
-            let equalHeightConstraint = NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .equal, toItem: scrollView, attribute: .height, multiplier: 1.0, constant: 0)
+            var contentViewConstraints = [NSLayoutConstraint]()
+            contentViewConstraints.append(NSLayoutConstraint(item: contentView, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1.0, constant: 0))
+            contentViewConstraints.append(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: scrollView, attribute: .trailing, multiplier: 1.0, constant: 0))
+            contentViewConstraints.append(NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1.0, constant: 0))
+            contentViewConstraints.append(NSLayoutConstraint(item: contentView, attribute: .bottom, relatedBy: .equal, toItem: scrollView, attribute: .bottom, multiplier: 1.0, constant: 0))
+
+            contentViewConstraints.append(NSLayoutConstraint(item: contentView, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1.0, constant: 0))
+            let contentHeightConstraint = NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .equal, toItem: scrollView, attribute: .height, multiplier: 1.0, constant: 0)
+            contentViewConstraints.append(contentHeightConstraint)
             
             // 计算scrolView的最小和最大高度，下面这个if语句是保证当actions的g总个数大于4时，
             // scrollView的高度至少为4个半YFAlertConfig.actionItemHeight的高度，否则自适应内容
-            
-            var minHeight: CGFloat = 0.0
-            
-            // TODO:
-//            guard let axis = axis else { return }
+            var scrollMinHeight: CGFloat = 0.0
+        
             if axis == .vertical {
                 if self.cancelAction != nil {
 // 如果有取消按钮且action总个数大于4，则除去取消按钮之外的其余部分的高度至少为3个半YFAlertConfig.actionItemHeight的高度,
 // 即加上取消按钮就是总高度至少为4个半YFAlertConfig.actionItemHeight的高度
                     if self.actions.count > 4 {
-                        minHeight = YFAlertConfig.actionItemHeight * 3.5
+                        scrollMinHeight = YFAlertConfig.actionItemHeight * 3.5
 // 优先级为997，必须小于998.0，因为头部如果内容过多时高度也会有限制，
 // 头部的优先级为998.0.这里定的规则是，当头部和action部分同时过多时，
 // 头部的优先级更高，但是它不能高到以至于action部分小于最小高度
-                        equalHeightConstraint.priority = UILayoutPriority(rawValue: 997.0)
+                        contentHeightConstraint.priority = UILayoutPriority(rawValue: 997.0)
                     } else {// 如果有取消按钮但action的个数大不于4，则该多高就显示多高
                         // 由子控件撑起
-                        equalHeightConstraint.priority = UILayoutPriority(rawValue: 1000.0)
+                        contentHeightConstraint.priority = UILayoutPriority(rawValue: 1000.0)
                     }
                 } else {
                     if self.actions.count > 4 {
-                        minHeight = YFAlertConfig.actionItemHeight * 4.5
-                        equalHeightConstraint.priority = UILayoutPriority(rawValue: 997.0)
+                        scrollMinHeight = YFAlertConfig.actionItemHeight * 4.5
+                        contentHeightConstraint.priority = UILayoutPriority(rawValue: 997.0)
                     } else {
-                        equalHeightConstraint.priority = UILayoutPriority(rawValue: 1000.0)
+                        contentHeightConstraint.priority = UILayoutPriority(rawValue: 1000.0)
                     }
                 }
             } else {
-                minHeight = YFAlertConfig.actionItemHeight
+                scrollMinHeight = YFAlertConfig.actionItemHeight
             }
             
-            let minHeightConstraint = NSLayoutConstraint(item: scrollView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: minHeight)
+            let scrollMinHeightConstraint = NSLayoutConstraint(item: scrollView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: scrollMinHeight)
             // 优先级不能大于对话框的最小顶部间距的优先级(999.0)
-            minHeightConstraint.priority = UILayoutPriority(rawValue: 999.0)
-            minHeightConstraint.isActive = true
-            equalHeightConstraint.isActive = true
+            scrollMinHeightConstraint.priority = UILayoutPriority(rawValue: 999.0)
+            scrollMinHeightConstraint.isActive = true
+
+            NSLayoutConstraint.activate(contentViewConstraints)
             NSLayoutConstraint.deactivate(contentView.constraints)
             
             // 对stackView布局
-            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[stackView]-0-|", options: [], metrics: nil, views: ["stackView": stackView]))
-            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[stackView]-0-|", options: [], metrics: nil, views: ["stackView": stackView]))
+            var stackViewConstraints = [NSLayoutConstraint]()
+            stackViewConstraints.append(NSLayoutConstraint(item: stackView, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: 0))
+            stackViewConstraints.append(NSLayoutConstraint(item: stackView, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .trailing, multiplier: 1.0, constant: 0))
+            stackViewConstraints.append(NSLayoutConstraint(item: stackView, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: 0))
+            stackViewConstraints.append(NSLayoutConstraint(item: stackView, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: 0))
+            NSLayoutConstraint.activate(stackViewConstraints)
+            
             // 对stackView里面的分割线布局
             self.updateLineConstraints()
         }
+        
         // cancelActionLine有superView则必有scrollView和cancelView
-        if cancelActionLine.superview != nil {
+        if let cancelLineContainer = cancelActionLine.superview {
             var cancelActionLineConstraints = [NSLayoutConstraint]()
-            cancelActionLineConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cancelActionLine]-0-|", options: [], metrics: nil, views: ["cancelActionLine" : cancelActionLine]))
+            cancelActionLineConstraints.append(NSLayoutConstraint(item: cancelActionLine, attribute: .leading, relatedBy: .equal, toItem: cancelLineContainer, attribute: .leading, multiplier: 1.0, constant: 0.0))
+            cancelActionLineConstraints.append(NSLayoutConstraint(item: cancelActionLine, attribute: .trailing, relatedBy: .equal, toItem: cancelLineContainer, attribute: .trailing, multiplier: 1.0, constant: 0.0))
+            
             cancelActionLineConstraints.append(NSLayoutConstraint(item: cancelActionLine, attribute: .bottom, relatedBy: .equal, toItem: cancelView, attribute: .top, multiplier: 1.0, constant: 0.0))
             cancelActionLineConstraints.append(NSLayoutConstraint(item: cancelActionLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 8.0))
             NSLayoutConstraint.activate(cancelActionLineConstraints)
@@ -293,7 +303,8 @@ extension YFActionSequenceView {
         // 对cancelView布局 有取消样式的按钮才对cancelView布局
         if cancelAction != nil {
             var cancelViewConstraints = [NSLayoutConstraint]()
-            cancelViewConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cancelView]-0-|", options: [], metrics: nil, views: ["cancelView": cancelView]))
+            cancelViewConstraints.append(NSLayoutConstraint(item: cancelView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0.0))
+            cancelViewConstraints.append(NSLayoutConstraint(item: cancelView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0.0))
             cancelViewConstraints.append(NSLayoutConstraint(item: cancelView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0))
             
             if self.cancelActionLine.superview == nil {

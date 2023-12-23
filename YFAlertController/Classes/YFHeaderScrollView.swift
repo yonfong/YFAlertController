@@ -34,10 +34,6 @@ class YFHeaderScrollView: UIScrollView {
         }
     }
     
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
-    
     //MARK: - lazy var
     lazy var contentView: UIView = {
         let contentV = UIView()
@@ -95,7 +91,7 @@ extension YFHeaderScrollView {
         self.textFieldView.addArrangedSubview(textField)
         // 由于self.textFieldView是没有高度的，它的高度由子控件撑起，
         // 所以子控件必须要有高度
-        let heightConstraint = NSLayoutConstraint(item: textField, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: 30.0)
+        let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 30.0)
         heightConstraint.isActive = true
         // 当一个自定义view的某个属性发生改变，并且可能影响到constraint时，
         // 需要调用此方法去标记constraints需要在未来的某个点更新，
@@ -142,8 +138,14 @@ extension YFHeaderScrollView {
         NSLayoutConstraint.deactivate(contentView.constraints)
         
         // 对contentView布局
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[contentView]-0-|", options: [], metrics: nil, views: ["contentView": contentView]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[contentView]-0-|", options: [], metrics: nil, views: ["contentView": contentView]))
+        let leadingConstraint = NSLayoutConstraint(item: contentView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
+        let trailingConstraint = NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
+        let bottomConstraint = NSLayoutConstraint(item: contentView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0)
+        leadingConstraint.isActive = true
+        trailingConstraint.isActive = true
+        topConstraint.isActive = true
+        bottomConstraint.isActive = true
         let widthConstraint = NSLayoutConstraint(item: contentView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0)
         widthConstraint.isActive = true
         
@@ -164,19 +166,19 @@ extension YFHeaderScrollView {
             let width = min(image.size.width, imageLimitSize.width)
             let height = min(image.size.height, imageLimitSize.height)
             
-            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: width))
-            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: height))
-            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0))
-            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: topMargin))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: width))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: height))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1.0, constant: 0))
+            imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: topMargin))
             
             if !(titleLabel.text?.isEmpty ?? true) || titleLabel.attributedText != nil {
-                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: titleLabel, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: titleLabel, attribute: .top, multiplier: 1.0, constant: -17))
             } else if !(messageLabel.text?.isEmpty ?? true) || messageLabel.attributedText != nil {
-                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: messageLabel, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: messageLabel, attribute: .top, multiplier: 1.0, constant: -17))
             }  else if textFields.count > 0 {
-                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: textFieldView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -17))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: textFieldView, attribute: .top, multiplier: 1.0, constant: -17))
             } else {
-                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: -bottomMargin))
+                imageViewConstraints.append(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: -bottomMargin))
             }
             NSLayoutConstraint.activate(imageViewConstraints)
         }
@@ -193,7 +195,8 @@ extension YFHeaderScrollView {
         
         for (index, label) in labels.enumerated() {
             // 左右间距
-            titleLabelConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-(==leftMargin)-[label]-(==rightMargin)-|", options: [], metrics: ["leftMargin": leftMargin, "rightMargin": rightMargin], views: ["label": label]))
+            titleLabelConstraints.append(NSLayoutConstraint(item: label, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: leftMargin))
+            titleLabelConstraints.append(NSLayoutConstraint(item: label, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .trailing, multiplier: 1.0, constant: -rightMargin))
             // 第一个子控件顶部间距
             if index == 0 {
                 if nil == imageView.image {
@@ -221,11 +224,12 @@ extension YFHeaderScrollView {
             // 没有titleLabel、messageLabel和iconView，
             // textFieldView的顶部相对contentView,否则不用写,因为前面写好了
             if labels.count == 0 && imageView.image == nil {
-                textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: topMargin))
+                textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: topMargin))
             }
             
-            textFieldViewConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-(==leftMargin)-[textFieldView]-(==rightMargin)-|", options: [], metrics: ["leftMargin": leftMargin, "rightMargin": rightMargin], views: ["textFieldView": textFieldView]))
-            textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: -bottomMargin))
+            textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: leftMargin))
+            textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .trailing, multiplier: 1.0, constant: -rightMargin))
+            textFieldViewConstraints.append(NSLayoutConstraint(item: textFieldView, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: -bottomMargin))
             NSLayoutConstraint.activate(textFieldViewConstraints)
         }
         

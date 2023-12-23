@@ -21,10 +21,6 @@ class YFAlertPresentationController: UIPresentationController {
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
     }
     
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
-    
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
         if let containerV = self.containerView {

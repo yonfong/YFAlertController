@@ -40,10 +40,6 @@ class YFPercentTransitionInteractor: UIPercentDrivenInteractiveTransition {
             break
         }
     }
-    
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
 }
 
 extension YFPercentTransitionInteractor {

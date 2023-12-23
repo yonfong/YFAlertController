@@ -87,10 +87,6 @@ open class YFAlertAction: NSObject {
             self.titleColor = YFAlertColorConfig.dynamicBlackColor
         }
     }
-    
-    deinit {
-        debugPrint("\(self.description) deinit")
-    }
 }
 
 extension YFAlertAction: NSCopying {

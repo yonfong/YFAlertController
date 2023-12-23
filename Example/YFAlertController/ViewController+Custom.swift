@@ -80,12 +80,27 @@ extension ViewController {
     
     // 示例23:自定义整个对话框(actionSheet样式从顶部弹出)
     func customTest6() {
+//        let shoppingCartView = CommodityListView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 200))
+//        shoppingCartView.backgroundColor = .white
+//        let alertController = YFAlertController.alertController(customAlertView: shoppingCartView, preferredStyle: .actionSheet, animationType: .fromTop)
+//        if customBlur {
+//            alertController.customOverlayView = CustomOverlayView()
+//        }
+//        self.present(alertController, animated: true, completion: nil)
+        
         let shoppingCartView = CommodityListView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 200))
         shoppingCartView.backgroundColor = .white
-        let alertController = YFAlertController.alertController(customAlertView: shoppingCartView, preferredStyle: .actionSheet, animationType: .fromTop)
+        let alertController = YFAlertController.alertController(title: "分享", message: nil, preferredStyle: .actionSheet)
         if customBlur {
             alertController.customOverlayView = CustomOverlayView()
         }
+        alertController.insertComponentView(shoppingCartView)
+        
+        let action1 = YFAlertAction.action(withTitle: "取消", style: .cancel) { (action) in
+            print("点击了第1个")
+        }
+
+        alertController.addAction(action: action1)
         self.present(alertController, animated: true, completion: nil)
     }
     
