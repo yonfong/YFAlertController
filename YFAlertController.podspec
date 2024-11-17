@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'YFAlertController'
-  s.version          = '0.5.0'
+  s.version          = '1.0.0'
   s.summary          = 'An iOS Customizable alert sheet Controller.'
 
 # This description is used to generate tags and improve search results.
