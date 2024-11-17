@@ -25,9 +25,15 @@ class YFAlertActionView: UIView {
     }
     //手指按下或者手指按下后往外拽再往内拽
     @objc func touchDown(button: UIButton) {
-        guard let _ = self.findAlertController() else { return }
+        guard let alert = self.findAlertController() else { return }
         
-        button.backgroundColor = YFAlertColorConfig.selectedColor
+        if alert.needDialogBlur {
+            // 需要毛玻璃时，只有白色带透明，毛玻璃效果才更加清澈
+            button.backgroundColor = YFAlertColorConfig.selectedColor
+        } else {
+            // 该颜色比'取消action'上的分割线的颜色浅一些
+            button.backgroundColor = UIColor.gray.withAlphaComponent(0.1)
+        }
     }
     
     // 手指被迫停止、手指按下后往外拽或者取消，取消的可能性:比如点击的那一刻突然来电话
@@ -111,7 +117,11 @@ class YFAlertActionView: UIView {
     
     lazy var actionButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.backgroundColor = YFAlertColorConfig.normalColor
+        if #available(iOS 13, *) {
+            btn.backgroundColor = .tertiarySystemBackground
+        } else {
+            btn.backgroundColor = YFAlertColorConfig.normalColor
+        }
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.titleLabel?.textAlignment = .center
         btn.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -138,7 +148,7 @@ class YFAlertActionView: UIView {
              self.actionButton.isEnabled = action.isEnabled
              if action.attributedTitle != nil {
                  //这里之所以要设置按钮颜色为黑色，是因为如果外界在addAction:之后设置按钮的富文本，那么富文本的颜色在没有采用NSForegroundColorAttributeName的情况下会自动读取按钮上普通文本的颜色，在addAction:之前设置会保持默认色(黑色)，为了在addAction:前后设置富文本保持统一，这里先将按钮置为黑色，富文本就会是黑色
-                 self.actionButton.setTitleColor(YFAlertColorConfig.dynamicBlackColor, for: .normal)
+                 self.actionButton.setTitleColor(.black, for: .normal)
                  if action.attributedTitle!.string.contains("\n") || action.attributedTitle!.string.contains("\r") {
                      self.actionButton.titleLabel?.lineBreakMode = .byWordWrapping
                  }

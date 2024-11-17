@@ -44,7 +44,7 @@ open class YFAlertAction: NSObject {
         }
     }
     /// action的标题颜色,这个颜色只是普通文本的颜色，富文本颜色需要用NSForegroundColorAttributeName
-    public var titleColor: UIColor = YFAlertColorConfig.dynamicBlackColor {
+    public var titleColor: UIColor = .black {
         didSet{// 颜色改变不需要更新布局
             self.propertyChangedClosure?(self,false)
         }
@@ -77,14 +77,14 @@ open class YFAlertAction: NSObject {
         self.handler = handler
 
         if style == .destructive {
-            self.titleColor = YFAlertColorConfig.alertRedColor
+            self.titleColor = .systemRed
             self.titleFont = UIFont.systemFont(ofSize: YFAlertConfig.actionTitleFontSize)
         } else if style == .cancel {
-            self.titleColor = YFAlertColorConfig.dynamicBlackColor
+            self.titleColor = .black
             self.titleFont = UIFont.boldSystemFont(ofSize: YFAlertConfig.actionTitleFontSize)
         } else {
+            self.titleColor = .black
             self.titleFont = UIFont.systemFont(ofSize: YFAlertConfig.actionTitleFontSize)
-            self.titleColor = YFAlertColorConfig.dynamicBlackColor
         }
     }
 }

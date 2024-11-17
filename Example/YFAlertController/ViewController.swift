@@ -130,6 +130,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             cell.backgroundColor = .white
         }
+        if #available(iOS 12.0, *) {
+            if self.traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark {
+                cell.backgroundColor = .clear
+            }
+        }
         return cell
     }
     

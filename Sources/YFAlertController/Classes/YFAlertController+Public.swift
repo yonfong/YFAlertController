@@ -216,7 +216,7 @@ public extension YFAlertController {
         
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = YFAlertColorConfig.textViewBackgroundColor
+        textField.backgroundColor = YFAlertColorConfig.textFieldBackgroundColor
         // 系统的UITextBorderStyleLine样式线条过于黑，所以自己设置
         textField.layer.borderWidth = YFAlertConfig.minLineHeight
         textField.layer.borderColor = YFAlertColorConfig.textFieldBorderColor.cgColor

@@ -88,44 +88,20 @@ struct YFAlertColorConfig {
         return .dynamicColor(defaultColor: UIColor.gray.withAlphaComponent(0.1), darkColor: UIColor(red: 55.0 / 255.0, green: 55.0 / 255.0, blue: 55.0 / 255.0, alpha: 1))
     }
     
-    static var lineColor: UIColor {
-        return .dynamicColor(defaultColor: lightLineColor, darkColor: darkLineColor)
-    }
-    
-    static var secondaryLineColor: UIColor {
-        return .dynamicColor(defaultColor: UIColor.gray.withAlphaComponent(0.15), darkColor: UIColor(red: 29.0 / 255.0, green: 29.0 / 255.0, blue: 29.0 / 255.0, alpha: 1))
-    }
-    
-    static var dynamicWhiteColor: UIColor {
-        return .dynamicColor(defaultColor: UIColor.white, darkColor: UIColor.black)
-    }
-    
-    static var dynamicBlackColor: UIColor {
-        return .dynamicColor(defaultColor: UIColor.black, darkColor: UIColor.white)
-    }
-    
     static var lightLineColor: UIColor {
         return UIColor.gray.withAlphaComponent(0.3)
     }
     
-    static var darkLineColor: UIColor {
-        return UIColor(red: 60.0 / 255.0, green: 60.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+    static var secondaryLineColor: UIColor {
+        return .gray.withAlphaComponent(0.15)
     }
     
-    static var textViewBackgroundColor: UIColor {
+    static var textFieldBackgroundColor: UIColor {
         return .dynamicColor(defaultColor: UIColor(red: 247.0 / 255.0, green: 247.0 / 255.0, blue: 247.0 / 255.0, alpha: 1), darkColor: UIColor(red: 54.0 / 255.0, green: 54.0 / 255.0, blue: 54.0 / 255.0, alpha: 1))
     }
-    
-    static var alertRedColor: UIColor {
-        return .systemRed
-    }
-    
-    static var grayColor: UIColor {
-        return .gray
-    }
-    
+
     static var textFieldBorderColor: UIColor {
-        return .staticColor(defaultColor: lineColor, darkColor: darkLineColor)
+        return .staticColor(defaultColor: lightLineColor, darkColor: secondaryLineColor)
     }
 }
 

@@ -12,18 +12,18 @@ class YFActionItemSeparatorView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = YFAlertColorConfig.lineColor
+        backgroundColor = YFAlertColorConfig.lightLineColor
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
-        backgroundColor = YFAlertColorConfig.lineColor
+        backgroundColor = YFAlertColorConfig.lightLineColor
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.backgroundColor = min(frame.width, frame.height) > YFAlertConfig.minLineHeight ? YFAlertColorConfig.secondaryLineColor : YFAlertColorConfig.lineColor
+        self.backgroundColor = min(frame.width, frame.height) > YFAlertConfig.minLineHeight ? YFAlertColorConfig.secondaryLineColor : YFAlertColorConfig.lightLineColor
     }
 }

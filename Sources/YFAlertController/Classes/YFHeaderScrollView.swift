@@ -27,6 +27,11 @@ class YFHeaderScrollView: UIScrollView {
     }
     
     private func initialize() {
+        if #available(iOS 13, *) {
+            self.backgroundColor = .tertiarySystemBackground
+        } else {
+            self.backgroundColor = .white
+        }
         self.showsVerticalScrollIndicator = false
         self.showsHorizontalScrollIndicator = false
         if #available(iOS 11.0, *) {
@@ -37,6 +42,11 @@ class YFHeaderScrollView: UIScrollView {
     //MARK: - lazy var
     lazy var contentView: UIView = {
         let contentV = UIView()
+        if #available(iOS 13, *) {
+            contentV.backgroundColor = .tertiarySystemBackground
+        } else {
+            contentV.backgroundColor = .white
+        }
         contentV.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(contentV)
         return contentV
@@ -46,7 +56,7 @@ class YFHeaderScrollView: UIScrollView {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: YFAlertConfig.actionTitleFontSize)
         label.textAlignment = .center
-        label.textColor = YFAlertColorConfig.dynamicBlackColor
+        label.textColor = .black
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(label)
@@ -57,7 +67,7 @@ class YFHeaderScrollView: UIScrollView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: YFAlertConfig.actionTitleFontSize)
         label.textAlignment = .center
-        label.textColor = YFAlertColorConfig.grayColor
+        label.textColor = .gray
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(label)
@@ -115,18 +125,6 @@ extension YFHeaderScrollView {
         // 这个block，主要是更新Label的最大预估宽度
         self.headerViewSafeAreaDidChangeClosure?()
         self.setNeedsUpdateConstraints()
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if #available(iOS 13.0, *) {
-            let resolvedColor = YFAlertColorConfig.lineColor
-            
-            for textField in textFields {
-                textField.layer.borderColor = resolvedColor.cgColor
-            }
-        }
     }
     
     // 自定义view应该重写此方法在其中建立constraints

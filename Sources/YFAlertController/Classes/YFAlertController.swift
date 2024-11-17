@@ -66,7 +66,7 @@ open class YFAlertController: UIViewController {
     /// 头部图标，位置处于title之上,大小取决于图片本身大小
     public var image: UIImage?
     /// 主标题颜色
-    public var titleColor: UIColor = YFAlertColorConfig.dynamicBlackColor {
+    public var titleColor: UIColor = .black {
         willSet (newValue){
             if isViewLoaded {
                 headerView?.titleLabel.textColor = newValue
@@ -85,7 +85,7 @@ open class YFAlertController: UIViewController {
         }
     }
     /// 副标题颜色
-    public var messageColor: UIColor = YFAlertColorConfig.grayColor {
+    public var messageColor: UIColor = .gray {
         willSet (newValue){
             if isViewLoaded {
                 headerView?.messageLabel.textColor = newValue
@@ -237,6 +237,11 @@ open class YFAlertController: UIViewController {
     
     internal lazy var containerView: UIView = {
         let view = UIView()
+        if #available(iOS 13, *) {
+            view.backgroundColor = .tertiarySystemBackground
+        } else {
+            view.backgroundColor = .white
+        }
         view.frame = self.alertControllerView.bounds
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
@@ -664,7 +669,11 @@ open class YFAlertController: UIViewController {
                     
                     dimmingdropView.frame = containerView.bounds
                     dimmingdropView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                    dimmingdropView.backgroundColor = YFAlertColorConfig.dynamicWhiteColor
+                    if #available(iOS 13, *) {
+                        dimmingKnockoutBackdropView?.backgroundColor = .tertiarySystemBackground
+                    } else {
+                        dimmingKnockoutBackdropView?.backgroundColor = .white
+                    }
                     self.containerView.insertSubview(dimmingdropView, at: 0)
                     dimmingKnockoutBackdropView = dimmingdropView
                 } else {
@@ -683,7 +692,11 @@ open class YFAlertController: UIViewController {
             if _customAlertView != nil {
                 containerView.backgroundColor = .clear
             } else {
-                containerView.backgroundColor = YFAlertColorConfig.dynamicWhiteColor
+                if #available(iOS 13, *) {
+                    containerView.backgroundColor = .tertiarySystemBackground
+                } else {
+                    containerView.backgroundColor = .white
+                }
             }
         }
     }
